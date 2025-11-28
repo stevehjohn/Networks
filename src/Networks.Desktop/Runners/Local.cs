@@ -5,7 +5,7 @@ namespace Networks.Desktop.Runners;
 
 public class Local
 {
-    public void Run(int puzzleNumber)
+    public static void Run(int puzzleNumber)
     {
         PuzzleManager.Path = "Data/Puzzles.json";
 

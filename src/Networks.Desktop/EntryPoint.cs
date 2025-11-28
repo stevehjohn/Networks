@@ -14,6 +14,6 @@ public static class EntryPoint
         });
         
         parser.ParseArguments<LocalOptions>(arguments)
-            .WithParsed(options => new Local().Run(options.PuzzleNumber));
+            .WithParsed(options => Local.Run(options.PuzzleNumber));
     }
 }
