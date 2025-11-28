@@ -3,7 +3,7 @@ using Networks.Engine.Infrastructure;
 
 namespace Networks.Desktop.Runners;
 
-public class Local
+public static class Local
 {
     public static void Run(int puzzleNumber)
     {
