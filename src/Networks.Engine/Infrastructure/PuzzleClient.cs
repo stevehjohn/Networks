@@ -17,7 +17,7 @@ public sealed class PuzzleClient : IDisposable
 
     private readonly int _userId;
 
-    private int _latestYear = 2005;
+    private int _latestYear = 2026;
 
     private readonly JsonSerializerOptions _jsonSerializerOptions = new()
     {
