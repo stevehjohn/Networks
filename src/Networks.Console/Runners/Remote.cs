@@ -18,6 +18,15 @@ public class Remote
 
     public void Run(RemoteOptions options)
     {
+        var validationResult = options.Validate();
+
+        if (! validationResult.IsValid)
+        {
+            WriteLine($"\n{validationResult.Message}\n");
+            
+            return;
+        }
+        
         var client = new PuzzleClient();
 
         var solver = new Solver
@@ -43,7 +52,9 @@ public class Remote
             {
                 try
                 {
-                    puzzle = client.GetNextPuzzle(options.Difficulty);
+                    puzzle = options.Day > 0 
+                        ? client.GetPuzzle(options.Difficulty, new DateOnly(options.Year.Value, options.Month.Value, options.Day.Value)) 
+                        : client.GetNextPuzzle(options.Difficulty);
                 }
                 catch
                 {
@@ -198,8 +209,6 @@ public class Remote
                 }
             }
         }
-        
-        Thread.Sleep(TimeSpan.FromMinutes(1));
 
         WriteLine();
     }

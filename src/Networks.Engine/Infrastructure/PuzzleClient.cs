@@ -35,7 +35,7 @@ public sealed class PuzzleClient : IDisposable
         };
 
         var lines = File.ReadAllLines("cookies.txt");
-        
+
         foreach (var line in lines)
         {
             var parts = line.Split('=');
@@ -64,6 +64,27 @@ public sealed class PuzzleClient : IDisposable
         _client.DefaultRequestHeaders.Add("Accept-Language", "en-US,en;q=0.9");
     }
 
+    public (DateOnly Date, Grid Grid, int Variant)? GetPuzzle(Difficulty difficulty, DateOnly date)
+    {
+        var year = date.Year;
+
+        var month = date.Month;
+
+        var day = date.Day;
+
+        using var response = _client.GetAsync($"network/{difficulty}/{year}/{month}/{day}").Result;
+
+        var page = response.Content.ReadAsStringAsync().Result;
+
+        var puzzleJson = page[(page.IndexOf("puzzleData = ", StringComparison.InvariantCultureIgnoreCase) + 13)..];
+
+        puzzleJson = puzzleJson[..puzzleJson.IndexOf(";", StringComparison.InvariantCultureIgnoreCase)];
+
+        var puzzle = JsonSerializer.Deserialize<Puzzle>(puzzleJson, _jsonSerializerOptions);
+
+        return (date, new Grid(puzzle), puzzle.Source.Variant);
+    }
+
     public (DateOnly Date, Grid Grid, int Variant)? GetNextPuzzle(Difficulty difficulty)
     {
         var nextPuzzleDate = GetOldestIncompletePuzzleDate(difficulty);
@@ -72,7 +93,7 @@ public sealed class PuzzleClient : IDisposable
         {
             return null;
         }
-        
+
         Thread.Sleep(TimeSpan.FromMilliseconds(5_000));
 
         var year = nextPuzzleDate.Value.Year;
@@ -122,7 +143,7 @@ public sealed class PuzzleClient : IDisposable
 
                 return new DateOnly(int.Parse(parts[3]), int.Parse(parts[4]), int.Parse(parts[5]));
             }
-            
+
             Thread.Sleep(TimeSpan.FromMilliseconds(3_000));
         }
 
@@ -132,7 +153,7 @@ public sealed class PuzzleClient : IDisposable
     public (HttpStatusCode StatusCode, PuzzleSolvedResponse Response) SendResult(DateOnly date, Grid grid, int variant)
     {
         Thread.Sleep(TimeSpan.FromMilliseconds(1_000));
-        
+
         var timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 
         var score = grid.Width * grid.Height * 5;
