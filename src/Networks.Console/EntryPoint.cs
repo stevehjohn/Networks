@@ -11,6 +11,7 @@ public static class EntryPoint
         var parser = new Parser(settings =>
         {
             settings.CaseInsensitiveEnumValues = true;
+            settings.HelpWriter = System.Console.Out;
         });
         
         parser.ParseArguments<LocalOptions, RemoteOptions>(arguments)
