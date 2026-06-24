@@ -1,3 +1,4 @@
+// ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
 using CommandLine;
@@ -14,7 +15,7 @@ public class RemoteOptions
     public Difficulty Difficulty { get; set; }
 
     [Option('q', "quantity", Required = false, HelpText = "The number of puzzles to solve.")]
-    public int? Quantity { get; set; }
+    public int? Quantity { get; set; } = 1;
 
     [Option('y', "year", Required = false, HelpText = "The year of the puzzle.")]
     public int? Year { get; [UsedImplicitly] set; }
@@ -27,13 +28,6 @@ public class RemoteOptions
 
     public (bool IsValid, string Message) Validate()
     {
-        var dateSpecified = Day.HasValue;
-
-        if (! dateSpecified && ! Quantity.HasValue)
-        {
-            return (false, "Either --quantity or a date must be specified.");
-        }
-
         if (Day.HasValue)
         {
             Month ??= DateTime.Now.Month;
