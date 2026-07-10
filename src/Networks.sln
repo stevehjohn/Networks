@@ -13,7 +13,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{CA0F5444-ED34-44AD-A995-72E51E7E5949}"
 	ProjectSection(SolutionItems) = preProject
 		..\run-console.sh = ..\run-console.sh
-		..\run-desktop.sh = ..\run-desktop.sh
+		..\desktop.sh = ..\desktop.sh
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Networks.Desktop", "Networks.Desktop\Networks.Desktop.csproj", "{E54285C3-5BB9-4052-B8EE-5315D04B84BC}"
